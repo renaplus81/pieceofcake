@@ -8,9 +8,12 @@
             "extensions":[
                 "dbaeumer.vscode-eslint",
                 "esbenp.prettier-vscode",
-                "christian-kohler.path-intellisense"
+                "christian-kohler.path-intellisense",
+                "formulahendry.code-runner"
+
             ]
         }
     },
+
     "remoteUser":"node"
 }
