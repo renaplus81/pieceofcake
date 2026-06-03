@@ -1,0 +1,16 @@
+{
+    "name": "It's a Piece of Cake Dev Container",
+    "build":{
+        "dockerfile":"Dockerfile"
+    },
+    "customizations":{
+        "vscode":{
+            "extensions":[
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "christian-kohler.path-intellisense"
+            ]
+        }
+    },
+    "remoteUser":"node"
+}
