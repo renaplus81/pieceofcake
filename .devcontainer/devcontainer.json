@@ -1,5 +1,5 @@
 {
-    "name": "It's a Piece of Cake Dev Container",
+    "name": "It's not a Piece of Cake Dev Container",
     "build":{
         "dockerfile":"Dockerfile"
     },
@@ -10,10 +10,9 @@
                 "esbenp.prettier-vscode",
                 "christian-kohler.path-intellisense",
                 "formulahendry.code-runner"
-
             ]
         }
     },
-
+    "forwardPorts": [3000],
     "remoteUser":"node"
 }
