@@ -9,22 +9,26 @@ const http = require('http');
 //fsはfile system→パソコンのファイルを読み書きするための機能
 const fs = require('fs');
 
+//アクセス毎に初期化されないようにconst serverよりも外に置く
 //サーバーのmoneyを画面に表示させたかったが、通信をするには
 //fetchをやるかここに直接HTMLを書くかの二択を提示されて
 //どっちもよくわからなかったのでここで定義する
 let stock = 3; //在庫
 let money = 500; //投入金額
 const price = 200; //商品の価格
+let message = '';
 
 //reqはブラウザが何を要求してきたか
 //function(req, res){}はコールバック関数
-//httpにアクセスされたら実行
+//httpにアクセスされたら実行されるコールバック関数
 const server = http.createServer(function(req, res){
+    //reqというのは、ブラウザがサーバーに送ってきたお願い(リクエスト)の情報　
+    //ブラウザから送られてきたリクエスト情報全部（req）
     
     // console.log('②アクセスされた');
     // console.log(req.url); //chromeが勝手に「このファイルありますか」と聞いているだけ
 
-    //buyが押された（？）
+    //req.urlはリクエスト情報の中からURLだけを見る、ということ
     if(req.url === '/buy'){
 
         if(stock <= 0){ //在庫がなくなった場合
@@ -33,7 +37,7 @@ const server = http.createServer(function(req, res){
         }else if(money >= price){ //価格より投入金額の方が大きい
             stock--;
             money = money - price;
-            console.log(stock, money);
+            console.log(`在庫:${stock}, 投入金額:${money}`);
         }else{  //価格より投入金額の方が小さい
             console.log("投入金額が足りません")
         }
@@ -54,6 +58,8 @@ const server = http.createServer(function(req, res){
 
     if(req.url === '/refund'){
         console.log('お釣り返却:', money, '円');
+        message =`${money}円のお返しです`;
+        console.log('message=', message);
         money = 0; //moneyを0に変更しないと、お釣りの金額のデータが残ったままになる
     }
 
@@ -77,7 +83,9 @@ const server = http.createServer(function(req, res){
     <h1>私の自動販売機</h1>
 
     <p>在庫: ${stock}</p>
-    <P>投入金額: ${money}円</p>
+    <p>投入金額: ${money}円</p>
+
+    <p>メッセージ：${message}</p>
 
     <!-- 100円ボタンを押したら→/deposit100にアクセスする -->
     <a href="/deposit100">
@@ -111,8 +119,12 @@ const server = http.createServer(function(req, res){
     res.writeHead(200, {
     'Content-Type': 'text/html; charset=utf-8'
     });
+
+
+
     res.end(html);
 });
+
 
 
 server.listen(3000);
