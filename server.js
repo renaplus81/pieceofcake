@@ -13,8 +13,8 @@ const fs = require('fs');
 //サーバーのmoneyを画面に表示させたかったが、通信をするには
 //fetchをやるかここに直接HTMLを書くかの二択を提示されて
 //どっちもよくわからなかったのでここで定義する
-let stock = 3; //在庫
-let money = 500; //投入金額
+let stock = 5; //在庫
+let money = 0; //投入金額
 const price = 200; //商品の価格
 let message = '';
 
@@ -63,6 +63,13 @@ const server = http.createServer(function(req, res){
         money = 0; //moneyを0に変更しないと、お釣りの金額のデータが残ったままになる
     }
 
+    //
+    if(req.url === '/'){
+        stock = 5;
+        money = 0;
+        message = 'リセットします';
+    }
+
     //urlに/buyを付け足したらマイナスされていく
     ///buyをつけなくなっても在庫は/buyをつけて減らした時のデータが反映される
 
@@ -70,46 +77,54 @@ const server = http.createServer(function(req, res){
     //画面にstockとmoneyを表示、fetchなしでやりたのでコメントアウト
     // const html = fs.readFileSync('index.html', 'utf-8');
 
-    //うーん
-    const html =`
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>my vending machine</title>
-</head>
-<body>
-    <h1>私の自動販売機</h1>
 
-    <p>在庫: ${stock}</p>
-    <p>投入金額: ${money}円</p>
+    //replaceで内容を書き換えているためconstではなくletを使用。
+    let html = fs.readFileSync('index.html', 'utf-8');
 
-    <p>メッセージ：${message}</p>
+    //HTMLの中身を新しい値に入れ替える
+    html = html.replace('${stock}', stock);
+    html = html.replace('${money}', money);
+    html = html.replace('${message}', message);
 
-    <!-- 100円ボタンを押したら→/deposit100にアクセスする -->
-    <a href="/deposit100">
-        <button>100円入れる</button>
-    </a>
+//     `
+// <!DOCTYPE html>
+// <html>
+// <head>
+//     <meta charset="UTF-8">
+//     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//     <title>my vending machine</title>
+// </head>
+// <body>
+//     <h1>私の自動販売機</h1>
 
-    <!-- 500円ボタンを押したら→/deposit500にアクセスする -->
-    <a href="/deposit500">
-        <button>500円入れる</button>
-    </a>
+//     <p>在庫: ${stock}</p>
+//     <p>投入金額: ${money}円</p>
 
-<br><br>
+//     <p>メッセージ：${message}</p>
 
-    <!-- 購入ボタンを押したら→/buyにアクセスする -->
-    <a href="/buy">
-        <button>購入</button>
-    </a>
+//     <!-- 100円ボタンを押したら→/deposit100にアクセスする -->
+//     <a href="/deposit100">
+//         <button>100円入れる</button>
+//     </a>
 
-    <a href="/refund">
-    <button>お釣り返却</button>
-    </a>
+//     <!-- 500円ボタンを押したら→/deposit500にアクセスする -->
+//     <a href="/deposit500">
+//         <button>500円入れる</button>
+//     </a>
+
+// <br><br>
+
+//     <!-- 購入ボタンを押したら→/buyにアクセスする -->
+//     <a href="/buy">
+//         <button>購入</button>
+//     </a>
+
+//     <a href="/refund">
+//     <button>お釣り返却</button>
+//     </a>
     
-</body>
-</html>`;
+// </body>
+// </html>`;
 //${}とは変数の中身を文字列に埋め込むための書き方
 //+を使うと文章が長くなるので
 

@@ -8,7 +8,9 @@
 <body>
     <h1>私の自動販売機</h1>
 
-    <p>在庫確認</p>
+    <p>在庫: ${stock}</p>
+    <p>投入金額: ${money}円</p>
+    <P>メッセージ: ${message}</P>
 
     <!-- //購入ボタンを押したら→/deposit100にアクセスされる -->
     <a href="/deposit100">
@@ -26,6 +28,14 @@
     <a href="/buy">
         <button>購入</button>
     </a>
+
+    <a href="/refund">
+        <button>お釣り返却</button>
+    </a>
     
+    <a href="/">
+        <button>戻る</button>
+    </a>
+
 </body>
 </html>
