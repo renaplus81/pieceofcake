@@ -3,6 +3,9 @@
 
 console.log('①サーバー起動');
 
+
+
+
 //最初のserver.js
 //ブラウザからのアクセスを受け付けるためのNode.jsの機能
 const http = require('http'); 
@@ -10,18 +13,54 @@ const http = require('http');
 const fs = require('fs');
 
 //アクセス毎に初期化されないようにconst serverよりも外に置く
-//サーバーのmoneyを画面に表示させたかったが、通信をするには
-//fetchをやるかここに直接HTMLを書くかの二択を提示されて
-//どっちもよくわからなかったのでここで定義する
-let stock = 5; //在庫
+//最初はstockをpriceを別々の変数で管理していたが、商品が増えたときに
+//管理しづらくなるためオブジェクトに変更した
+
+// let stock = 5; //在庫
 let money = 0; //投入金額
-const price = 200; //商品の価格
+// const price = 200; //商品の価格
 let message = '';
+
+
+//最初は試しで一個だけpriceを定義してたけど増やした
+const item = {
+    name: "コーンポタージュ",
+    price: 180,
+    stock: 3
+};
+const item2 = {
+    name: "ジャスミンティー",
+    price: 100,
+    stock: 5,
+};
+
+const item3 = {
+    name: "ミルクティー",
+    price: 150,
+    stock: 4,
+};
+
+const items = [
+    item,
+    item2,
+    item3
+];
+
+console.log(items[0].name);
+console.log(items[1].name);
+console.log(items[2].name);
+
+
+
 
 //reqはブラウザが何を要求してきたか
 //function(req, res){}はコールバック関数
 //httpにアクセスされたら実行されるコールバック関数
 const server = http.createServer(function(req, res){
+
+    //お試し
+        const selectedItem = items[0];  
+
     //reqというのは、ブラウザがサーバーに送ってきたお願い(リクエスト)の情報　
     //ブラウザから送られてきたリクエスト情報全部（req）
     
@@ -31,13 +70,14 @@ const server = http.createServer(function(req, res){
     //req.urlはリクエスト情報の中からURLだけを見る、ということ
     if(req.url === '/buy'){
 
-        if(stock <= 0){ //在庫がなくなった場合
+        if(selectedItem.stock <= 0){ //在庫がなくなった場合
             console.log("売り切れです");
 
-        }else if(money >= price){ //価格より投入金額の方が大きい
-            stock--;
-            money = money - price;
-            console.log(`在庫:${stock}, 投入金額:${money}`);
+        }else if(money >= selectedItem.price){ //価格より投入金額の方が大きい
+            selectedItem.stock--;
+            // money = money - item.price;
+            money -= selectedItem.price
+            console.log(`在庫:${selectedItem.stock}, 投入金額:${money}`);
         }else{  //価格より投入金額の方が小さい
             console.log("投入金額が足りません")
         }
@@ -59,13 +99,13 @@ const server = http.createServer(function(req, res){
     if(req.url === '/refund'){
         console.log('お釣り返却:', money, '円');
         message =`${money}円のお返しです`;
-        console.log('message=', message);
+        console.log(message);
         money = 0; //moneyを0に変更しないと、お釣りの金額のデータが残ったままになる
     }
 
     //
     if(req.url === '/'){
-        stock = 5;
+        selectedItem.stock = 3;
         money = 0;
         message = 'リセットします';
     }
@@ -82,7 +122,11 @@ const server = http.createServer(function(req, res){
     let html = fs.readFileSync('index.html', 'utf-8');
 
     //HTMLの中身を新しい値に入れ替える
-    html = html.replace('${stock}', stock);
+    // html = html.replace('${stock}', stock);
+    html = html.replace('${item.name}', selectedItem.name);
+    html = html.replace('${item.price}', selectedItem.price);
+    html = html.replace('${item.stock}', selectedItem.stock);
+
     html = html.replace('${money}', money);
     html = html.replace('${message}', message);
 
