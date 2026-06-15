@@ -1,18 +1,20 @@
+// VSコードで開発環境を自動構築するための設定ファイル
 {
     "name": "It's not a Piece of Cake Dev Container",
+    // Dockerfileに書かれた内容をもとに開発環境を構築
     "build":{
         "dockerfile":"Dockerfile"
     },
     "customizations":{
         "vscode":{
             "extensions":[
-                "dbaeumer.vscode-eslint",
-                "esbenp.prettier-vscode",
-                "christian-kohler.path-intellisense",
-                "formulahendry.code-runner"
+                "dbaeumer.vscode-eslint", //jsのコードチェック
+                "esbenp.prettier-vscode", //読みやすいコードにしてくれる
+                "christian-kohler.path-intellisense", //ファイルパス補完
+                "formulahendry.code-runner" //コード実行の三角ボタン
             ]
         }
     },
-    "forwardPorts": [3000],
-    "remoteUser":"node"
+    "forwardPorts": [3000], //コンテナ内の3000番ポートをブラウザからアクセス
+    "remoteUser":"node" //コンテナ内で使用するユーザー
 }

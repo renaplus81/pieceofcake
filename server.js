@@ -1,10 +1,4 @@
-
-
-
 console.log('①サーバー起動');
-
-
-
 
 //最初のserver.js
 //ブラウザからのアクセスを受け付けるためのNode.jsの機能
@@ -52,36 +46,66 @@ console.log(items[2].name);
 
 
 
-
 //reqはブラウザが何を要求してきたか
 //function(req, res){}はコールバック関数
 //httpにアクセスされたら実行されるコールバック関数
 const server = http.createServer(function(req, res){
 
-    //お試し
-        const selectedItem = items[0];  
+    let selectedItem = null;
 
     //reqというのは、ブラウザがサーバーに送ってきたお願い(リクエスト)の情報　
     //ブラウザから送られてきたリクエスト情報全部（req）
     
     // console.log('②アクセスされた');
-    // console.log(req.url); //chromeが勝手に「このファイルありますか」と聞いているだけ
+    console.log(req.url); //chromeが勝手に「このファイルありますか」と聞いているだけ
 
-    //req.urlはリクエスト情報の中からURLだけを見る、ということ
-    if(req.url === '/buy'){
+    //商品追加後
+    if (req.url === '/buy1') {
+        const item = items[0];
 
-        if(selectedItem.stock <= 0){ //在庫がなくなった場合
-            console.log("売り切れです");
-
-        }else if(money >= selectedItem.price){ //価格より投入金額の方が大きい
-            selectedItem.stock--;
-            // money = money - item.price;
-            money -= selectedItem.price
-            console.log(`在庫:${selectedItem.stock}, 投入金額:${money}`);
-        }else{  //価格より投入金額の方が小さい
-            console.log("投入金額が足りません")
+        //在庫が0ではないかつ、価格より投入金額の方が大きい場合、
+        if (item.stock > 0 && money >= item.price) {
+            item.stock--;
+            money -= item.price;
+            console.log(item.name, item.stock);
         }
     }
+
+    if (req.url === '/buy2') {
+        const item = items[1];
+
+        if (item.stock > 0 && money >= item.price) {
+            item.stock--;
+            money -= item.price;
+            console.log(item.name, item.stock);
+        }
+    }
+
+    if (req.url === '/buy3') {
+        const item = items[2];
+
+        if (item.stock > 0 && money >= item.price) {
+            item.stock--;
+            money -= item.price;
+            console.log(item.name, item.stock);
+        }
+    }
+
+
+
+//req.urlはリクエスト情報の中からURLだけを見るということ
+// if(req.url === '/buy1'){
+//     if(item.stock <= 0){ //在庫がなくなった場合
+//         console.log("売り切れです");
+//     }else if(money >= item.price){ //価格より投入金額の方が大きい
+//         item.stock--;
+//         // money = money - item.price;
+// //         money -= item.price
+//         console.log(`在庫:${item.stock}, 投入金額:${money}`);
+//     }else{  //価格より投入金額の方が小さい
+//         console.log("投入金額が足りません")
+//     }
+// }
 
 
     //100円を投入
@@ -105,9 +129,10 @@ const server = http.createServer(function(req, res){
 
     //
     if(req.url === '/'){
-        selectedItem.stock = 3;
+        item.stock = 3;
+        item2.stock = 5;
+        item3.stock = 4;
         money = 0;
-        message = 'リセットします';
     }
 
     //urlに/buyを付け足したらマイナスされていく
@@ -123,9 +148,26 @@ const server = http.createServer(function(req, res){
 
     //HTMLの中身を新しい値に入れ替える
     // html = html.replace('${stock}', stock);
+
+
+    html = html.replace('${item.name}', item.name);
+    html = html.replace('${item.price}', item.price);
+    html = html.replace('${item.stock}', item.stock);
+
+    html = html.replace('${item2.name}', item2.name);
+    html = html.replace('${item2.price}', item2.price);
+    html = html.replace('${item2.stock}', item2.stock);
+
+    html = html.replace('${item3.name}', item3.name);
+    html = html.replace('${item3.price}', item3.price);
+    html = html.replace('${item3.stock}', item3.stock);
+
+
+    if(selectedItem){
     html = html.replace('${item.name}', selectedItem.name);
     html = html.replace('${item.price}', selectedItem.price);
     html = html.replace('${item.stock}', selectedItem.stock);
+    }
 
     html = html.replace('${money}', money);
     html = html.replace('${message}', message);

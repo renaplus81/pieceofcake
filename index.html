@@ -8,10 +8,10 @@
 <body>
     <h1>私の自動販売機</h1>
 
-    <!-- <p>在庫: ${stock}</p> -->
+    <!-- <p>在庫: ${stock}</p>
      <p>商品名: ${item.name}</p>
      <p>価格: ${item.price}</p>
-     <p>在庫: ${item.stock}</p>
+     <p>在庫: ${item.stock}</p> -->
 
 
     <p>投入金額: ${money}円</p>
@@ -30,9 +30,23 @@
 <br><br>
 
     <!-- //購入ボタンを押したら→/buyにアクセスされる -->
-    <a href="/buy">
-        <button>購入</button>
+     <p>コーンポタージュ ${item.stock}個</p>
+    <a href="/buy1">
+        <button>コーンポタージュ購入</button>
     </a>
+
+     <p>ジャスミンティー ${item2.stock}個</p>
+    <a href="/buy2">
+        <button>ジャスミンティー購入</button>
+    </a>
+
+     <p>ミルクティー ${item3.stock}個</p>
+    <a href="/buy3">
+        <button>ミルクティー購入</button>
+    </a>
+
+<br>
+<br>
 
     <a href="/refund">
         <button>お釣り返却</button>
