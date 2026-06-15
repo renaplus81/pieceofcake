@@ -40,6 +40,7 @@ const items = [
     item3
 ];
 
+console.log("商品一覧");
 console.log(items[0].name);
 console.log(items[1].name);
 console.log(items[2].name);
@@ -220,7 +221,7 @@ const server = http.createServer(function(req, res){
     res.writeHead(200, {
     'Content-Type': 'text/html; charset=utf-8'
     });
-
+//200：成功
 
 
     res.end(html);
